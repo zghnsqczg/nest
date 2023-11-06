@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "skipLibCheck": true,
+    "types": [
+      "element-plus/global",
+      "@dafenqi/element-plus/global",
+      "unplugin-icons/types/vue"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/**/*.d.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "./components.d.ts",
+    "./auto-imports.d.ts" // 引入到这里
+  ],
+  "exclude": [
+    "node_modules/**"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
