@@ -23,6 +23,19 @@ export class UserController {
       captcha,
     };
   }
+  @Get('list')
+  getList() {
+    return {
+      code: 200,
+      data: [
+        { name: 'Tag 1', type: '' },
+        { name: 'Tag 2', type: 'success' },
+        { name: 'Tag 3', type: 'info' },
+        { name: 'Tag 4', type: 'warning' },
+        { name: 'Tag 5', type: 'danger' },
+      ],
+    };
+  }
 
   @Post('create')
   createUser(@Body() body, @Session() session) {

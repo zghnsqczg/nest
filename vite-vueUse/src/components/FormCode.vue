@@ -25,13 +25,27 @@
     <el-form-item>
       <el-button @click="submitForm(ruleFormRef)">登陆</el-button>
     </el-form-item>
+    <el-button @click="downLoad">下载</el-button>
+    <el-button @click="()=>immediate=!immediate">{{ immediate?'发送':'手动' }}</el-button>
+    <el-button @click="handleAddTodo">发送</el-button>
+    <!-- <div>
+      <el-tag
+      v-for="tag in list"
+      :key="tag.name"
+      class="mx-1"
+      closable
+      :type="tag.type"
+    >
+    {{ tag.name }}
+    </el-tag>
+    </div> -->
   </el-form>
 </template>
 
 <script setup lang="ts">
 import { useRequest } from "alova";
 import http from "@/utils/request";
-import { json } from "stream/consumers";
+import axios from "axios";
 type formType = {
   account: string;
   password: string;
@@ -44,6 +58,25 @@ const form = ref<formType>({
 });
 const codeUrl = ref("/api/user/code");
 const ruleFormRef = ref();
+
+const immediate=ref(false)
+
+
+const {
+  // ...
+  // 手动发送器请求的函数，调用后发送请求
+  send: addTodo
+} = useRequest(() => http.Get('/user/list',), {
+  // 当immediate为false时，默认不发出
+  immediate:immediate.value,
+});
+// 手动发送请求
+const handleAddTodo =async () => {
+  // send函数返回一个Promise对象，可接收响应数据
+const data=  await  addTodo()
+
+console.log(`output->res`,data)
+};
 
 const submitForm = (formEl: any) => {
   if (!formEl) return;
@@ -67,11 +100,25 @@ const submitForm = (formEl: any) => {
     }
   });
 };
+const downLoad=async()=>{
+  const {data}=await axios({
+    method:'get',
+    url:'/api/upload/stream',
+    responseType: 'blob',
+  })
+ if(data.size){
+    console.log(`output->data`,data)
+    const urlDownload = URL.createObjectURL(data);
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = urlDownload;
+    link.setAttribute('download', '11.png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+ }
+}
 onMounted(() => {});
-// const getCode = () => {
-
-// };
-
 const restCode = () => {
   codeUrl.value = codeUrl.value + "?" + Math.random();
 };
